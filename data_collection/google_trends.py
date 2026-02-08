@@ -72,7 +72,19 @@ def fetch_and_store():
     daily = daily.rename(columns={"index": "date"})
     daily["date"] = daily["date"].dt.strftime("%Y-%m-%d")
 
+    # Safety check: don't replace if new data is significantly smaller
     conn = get_connection()
+    try:
+        existing = pd.read_sql("SELECT COUNT(*) as cnt FROM google_trends", conn).iloc[0]["cnt"]
+    except Exception:
+        existing = 0
+
+    if existing > 0 and len(daily) < existing * 0.8:
+        print(f"SAFETY ABORT: New data ({len(daily)} rows) is <80% of existing ({existing} rows).")
+        print("This likely indicates a pytrends failure. Keeping existing data.")
+        conn.close()
+        return
+
     daily.to_sql("google_trends", conn, if_exists="replace", index=False)
     conn.close()
 

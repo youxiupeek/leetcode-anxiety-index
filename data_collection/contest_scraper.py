@@ -165,13 +165,27 @@ def scrape_all_contests():
     else:
         print("\nStep 3: No gaps to fill, all data from GitHub.")
 
-    # --- Step 4: Save to database ---
+    # --- Step 4: Save to database (filter out future/invalid contests) ---
     print("\nStep 4: Saving to database...")
+    today = datetime.utcnow()
     saved = 0
+    skipped = 0
     for c in contests_to_process:
-        if c["participant_count"] is not None and c["participant_count"] > 0:
-            upsert_contest(c["slug"], c["type"], c["number"], c["date"], c["participant_count"])
-            saved += 1
+        if c["participant_count"] is None or c["participant_count"] <= 0:
+            continue
+        # Skip future contests (pre-registration numbers, not actual participants)
+        if c["datetime"] > today:
+            skipped += 1
+            continue
+        # Skip suspiciously low counts (likely incomplete data)
+        if c["participant_count"] < 500:
+            skipped += 1
+            continue
+        upsert_contest(c["slug"], c["type"], c["number"], c["date"], c["participant_count"])
+        saved += 1
+
+    if skipped:
+        print(f"  Skipped {skipped} contests (future dates or <500 participants)")
 
     print(f"Saved {saved} contests to database")
 

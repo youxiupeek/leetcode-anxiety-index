@@ -63,7 +63,20 @@ def fetch_stock_data():
 
     result_df = pd.DataFrame(rows)
 
+    # Safety check: verify we got reasonable amount of data before replacing
+    # This prevents data loss if yfinance has a partial failure
     conn = get_connection()
+    try:
+        existing = pd.read_sql("SELECT COUNT(*) as cnt FROM stock_prices", conn).iloc[0]["cnt"]
+    except Exception:
+        existing = 0
+
+    if existing > 0 and len(result_df) < existing * 0.8:
+        print(f"SAFETY ABORT: New data ({len(result_df)} rows) is <80% of existing ({existing} rows).")
+        print("This likely indicates a yfinance failure. Keeping existing data.")
+        conn.close()
+        return
+
     result_df.to_sql("stock_prices", conn, if_exists="replace", index=False)
     conn.close()
 

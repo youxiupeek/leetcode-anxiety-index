@@ -207,9 +207,15 @@ def compute_risk_metrics(lai, stock_prices, threshold=THRESHOLD_HIGH, holding_pe
     profit_factor = round(gross_profits / gross_losses, 2) if gross_losses > 0 else float('inf')
 
     # --- Calmar ratio ---
-    # Annualized return / max drawdown
-    # Approx: each trade takes ~holding_period days, so trades_per_year ≈ 252/holding_period
-    trades_per_year = 252 / holding_period
+    # Annualized return based on ACTUAL signal frequency, not theoretical
+    # Use real elapsed time between first and last signal to get true trades/year
+    first_date = pd.Timestamp(dates_used[0])
+    last_date = pd.Timestamp(dates_used[-1])
+    elapsed_years = (last_date - first_date).days / 365.25
+    if elapsed_years > 0 and n > 1:
+        trades_per_year = n / elapsed_years
+    else:
+        trades_per_year = n  # fallback
     annualized_return = (1 + mean_ret) ** trades_per_year - 1
     calmar = round(annualized_return / abs(max_drawdown), 2) if max_drawdown != 0 else float('inf')
 
