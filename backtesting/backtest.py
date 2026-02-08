@@ -101,6 +101,22 @@ def regime_analysis(lai, stock_returns):
     return result
 
 
+def _compute_forward_returns_for_dates(signal_dates, stock_prices, period):
+    """Helper: compute forward returns for a list of signal dates."""
+    fwd_returns = []
+    for date in signal_dates:
+        future = date + pd.Timedelta(days=period)
+        mask = stock_prices.index >= future
+        if mask.any():
+            future_date = stock_prices.index[mask][0]
+            mask_now = stock_prices.index >= date
+            if mask_now.any():
+                now_date = stock_prices.index[mask_now][0]
+                ret = stock_prices.loc[future_date] / stock_prices.loc[now_date] - 1
+                fwd_returns.append(float(ret))
+    return fwd_returns
+
+
 def forward_return_analysis(lai, stock_prices, threshold=THRESHOLD_HIGH, periods=[5, 10, 20, 60]):
     """After LAI crosses above threshold, compute forward returns."""
     # Find dates where LAI crosses above threshold
@@ -110,18 +126,7 @@ def forward_return_analysis(lai, stock_prices, threshold=THRESHOLD_HIGH, periods
 
     results = {}
     for period in periods:
-        fwd_returns = []
-        for date in signal_dates:
-            future = date + pd.Timedelta(days=period)
-            # Find closest trading day
-            mask = stock_prices.index >= future
-            if mask.any():
-                future_date = stock_prices.index[mask][0]
-                mask_now = stock_prices.index >= date
-                if mask_now.any():
-                    now_date = stock_prices.index[mask_now][0]
-                    ret = stock_prices.loc[future_date] / stock_prices.loc[now_date] - 1
-                    fwd_returns.append(float(ret))
+        fwd_returns = _compute_forward_returns_for_dates(signal_dates, stock_prices, period)
 
         if fwd_returns:
             results[f"{period}d"] = {
@@ -134,6 +139,96 @@ def forward_return_analysis(lai, stock_prices, threshold=THRESHOLD_HIGH, periods
             }
 
     return results
+
+
+def random_baseline(stock_prices, n_signals, periods=[5, 10, 20, 60], n_simulations=10000):
+    """Compute baseline: what if you randomly picked n_signals dates to buy?
+
+    Uses Monte Carlo bootstrap: randomly sample n_signals trading days,
+    compute forward returns, repeat 10,000 times to build a null distribution.
+    """
+    trading_days = stock_prices.index
+    # Need enough room for the longest holding period
+    max_period = max(periods)
+    eligible_days = trading_days[:-max_period - 30]  # leave buffer
+
+    results = {}
+    for period in periods:
+        sim_means = []
+        sim_win_rates = []
+        for _ in range(n_simulations):
+            random_dates = np.random.choice(eligible_days, size=n_signals, replace=False)
+            fwd_returns = _compute_forward_returns_for_dates(
+                pd.DatetimeIndex(random_dates), stock_prices, period
+            )
+            if fwd_returns:
+                sim_means.append(np.mean(fwd_returns) * 100)
+                sim_win_rates.append(np.mean([r > 0 for r in fwd_returns]) * 100)
+
+        results[f"{period}d"] = {
+            "baseline_mean_return_pct": round(np.mean(sim_means), 2),
+            "baseline_median_return_pct": round(np.median(sim_means), 2),
+            "baseline_win_rate_pct": round(np.mean(sim_win_rates), 1),
+            "baseline_std_of_means_pct": round(np.std(sim_means), 2),
+            "sim_means": sim_means,
+            "sim_win_rates": sim_win_rates,
+        }
+
+    return results
+
+
+def compare_vs_random(lai, stock_prices, threshold=THRESHOLD_HIGH,
+                      periods=[5, 10, 20, 60], n_simulations=10000):
+    """Compare LAI signal performance vs random buy baseline.
+
+    Returns the LAI signal stats, random baseline stats, and p-values
+    for whether the LAI signal is statistically better than random.
+    """
+    # LAI signal forward returns
+    above = lai > threshold
+    crossings = above & ~above.shift(1, fill_value=False)
+    signal_dates = crossings[crossings].index
+    n_signals = len(signal_dates)
+
+    lai_results = forward_return_analysis(lai, stock_prices, threshold, periods)
+    rand_results = random_baseline(stock_prices, n_signals, periods, n_simulations)
+
+    comparison = {}
+    for period in periods:
+        key = f"{period}d"
+        if key not in lai_results or key not in rand_results:
+            continue
+
+        lai_mean = lai_results[key]["mean_return_pct"]
+        lai_wr = lai_results[key]["win_rate_pct"]
+        rand_means = rand_results[key]["sim_means"]
+        rand_wrs = rand_results[key]["sim_win_rates"]
+
+        # P-value: fraction of random simulations that beat the LAI signal
+        p_value_return = np.mean([m >= lai_mean for m in rand_means])
+        p_value_winrate = np.mean([w >= lai_wr for w in rand_wrs])
+
+        # Percentile of LAI signal in the random distribution
+        percentile_return = round(np.mean([m < lai_mean for m in rand_means]) * 100, 1)
+        percentile_winrate = round(np.mean([w < lai_wr for w in rand_wrs]) * 100, 1)
+
+        comparison[key] = {
+            "lai_mean_return_pct": lai_mean,
+            "lai_win_rate_pct": lai_wr,
+            "lai_sharpe": lai_results[key]["sharpe"],
+            "random_mean_return_pct": rand_results[key]["baseline_mean_return_pct"],
+            "random_win_rate_pct": rand_results[key]["baseline_win_rate_pct"],
+            "excess_return_pct": round(lai_mean - rand_results[key]["baseline_mean_return_pct"], 2),
+            "excess_win_rate_pct": round(lai_wr - rand_results[key]["baseline_win_rate_pct"], 1),
+            "p_value_return": round(p_value_return, 4),
+            "p_value_winrate": round(p_value_winrate, 4),
+            "percentile_return": percentile_return,
+            "percentile_winrate": percentile_winrate,
+            "n_signals": n_signals,
+            "n_simulations": n_simulations,
+        }
+
+    return comparison
 
 
 def event_study(lai, stock_prices, events=None, window=60):
@@ -250,6 +345,22 @@ def run_full_backtest():
         print(f"\n  {period} forward:")
         for k, v in metrics.items():
             print(f"    {k}: {v}")
+
+    # --- 4b. LAI Signal vs Random Buy (Monte Carlo) ---
+    print("\n" + "-" * 50)
+    print(f"4b. LAI SIGNAL vs RANDOM BUY (10,000 simulations)")
+    print("-" * 50)
+    comparison = compare_vs_random(lai, benchmark_prices)
+    for period_key, metrics in comparison.items():
+        print(f"\n  {period_key} holding period ({metrics['n_signals']} signals vs {metrics['n_simulations']} random trials):")
+        print(f"    LAI Signal:  mean={metrics['lai_mean_return_pct']:+.2f}%  win_rate={metrics['lai_win_rate_pct']:.1f}%  sharpe={metrics['lai_sharpe']}")
+        print(f"    Random Buy:  mean={metrics['random_mean_return_pct']:+.2f}%  win_rate={metrics['random_win_rate_pct']:.1f}%")
+        print(f"    ─────────────────────────────────────────")
+        print(f"    Excess Return:   {metrics['excess_return_pct']:+.2f}%")
+        print(f"    Excess Win Rate: {metrics['excess_win_rate_pct']:+.1f}%")
+        print(f"    P-value (return):   {metrics['p_value_return']:.4f}{'  **' if metrics['p_value_return'] < 0.05 else '  *' if metrics['p_value_return'] < 0.1 else ''}")
+        print(f"    P-value (win rate): {metrics['p_value_winrate']:.4f}{'  **' if metrics['p_value_winrate'] < 0.05 else '  *' if metrics['p_value_winrate'] < 0.1 else ''}")
+        print(f"    Percentile rank:    {metrics['percentile_return']:.1f}th (return), {metrics['percentile_winrate']:.1f}th (win rate)")
 
     # --- 5. Event Study ---
     print("\n" + "-" * 50)
