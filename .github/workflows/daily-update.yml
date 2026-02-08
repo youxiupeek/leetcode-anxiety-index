@@ -3,7 +3,7 @@ name: Daily LAI Update (EOD)
 on:
   schedule:
     # Run at 00:30 UTC daily (US market closes at 21:00 UTC / 4PM ET)
-    - cron: '30 0 * * *'
+    - cron: '30 0 * * 1-6'
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -37,14 +38,14 @@ jobs:
       - name: Recompute LAI
         run: python indicator/lai_calculator.py
 
-      - name: Run backtest
+      - name: Run full backtest (risk metrics, Monte Carlo, etc.)
         run: python backtesting/backtest.py
 
       - name: Commit and push updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/lai.db
+          git add data/lai.db data/backtest_results.json
           if git diff --staged --quiet; then
             echo "No data changes to commit"
           else

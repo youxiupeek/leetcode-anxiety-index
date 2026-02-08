@@ -1,0 +1,500 @@
+{
+  "metadata": {
+    "data_points": 1512,
+    "period_start": "2020-02-03",
+    "period_end": "2026-02-06",
+    "benchmark": "QQQ",
+    "threshold": 70,
+    "computed_at": "2026-02-08 12:15:36"
+  },
+  "forward_returns": {
+    "5d": {
+      "n_signals": 19,
+      "mean_return_pct": 1.38,
+      "median_return_pct": 1.85,
+      "win_rate_pct": 84.2,
+      "std_pct": 2.08,
+      "sharpe": 0.66,
+      "max_gain_pct": 3.9,
+      "max_loss_pct": -4.0,
+      "signal_dates": [
+        "2020-04-08",
+        "2020-06-03",
+        "2020-06-16",
+        "2020-07-14",
+        "2020-07-27",
+        "2020-08-10",
+        "2021-01-25",
+        "2021-05-24",
+        "2021-07-12",
+        "2021-12-15",
+        "2022-06-13",
+        "2022-07-29",
+        "2022-08-08",
+        "2023-05-22",
+        "2023-06-30",
+        "2024-01-04",
+        "2024-06-13",
+        "2025-01-14",
+        "2025-06-17"
+      ],
+      "returns": [
+        1.23,
+        2.05,
+        1.78,
+        2.46,
+        3.56,
+        1.85,
+        -1.73,
+        0.09,
+        -2.14,
+        -4.0,
+        2.25,
+        2.36,
+        3.85,
+        3.65,
+        0.23,
+        2.39,
+        1.78,
+        3.9,
+        0.6
+      ]
+    },
+    "10d": {
+      "n_signals": 19,
+      "mean_return_pct": 2.01,
+      "median_return_pct": 1.75,
+      "win_rate_pct": 73.7,
+      "std_pct": 2.33,
+      "sharpe": 0.86,
+      "max_gain_pct": 6.07,
+      "max_loss_pct": -1.85,
+      "signal_dates": [
+        "2020-04-08",
+        "2020-06-03",
+        "2020-06-16",
+        "2020-07-14",
+        "2020-07-27",
+        "2020-08-10",
+        "2021-01-25",
+        "2021-05-24",
+        "2021-07-12",
+        "2021-12-15",
+        "2022-06-13",
+        "2022-07-29",
+        "2022-08-08",
+        "2023-05-22",
+        "2023-06-30",
+        "2024-01-04",
+        "2024-06-13",
+        "2025-01-14",
+        "2025-06-17"
+      ],
+      "returns": [
+        6.07,
+        0.87,
+        -0.91,
+        -1.85,
+        5.58,
+        3.56,
+        0.65,
+        -0.75,
+        0.42,
+        1.75,
+        3.63,
+        1.66,
+        2.67,
+        4.26,
+        -0.83,
+        3.34,
+        -0.42,
+        4.86,
+        3.71
+      ]
+    },
+    "20d": {
+      "n_signals": 19,
+      "mean_return_pct": 3.81,
+      "median_return_pct": 4.38,
+      "win_rate_pct": 89.5,
+      "std_pct": 3.07,
+      "sharpe": 1.24,
+      "max_gain_pct": 9.09,
+      "max_loss_pct": -5.08,
+      "signal_dates": [
+        "2020-04-08",
+        "2020-06-03",
+        "2020-06-16",
+        "2020-07-14",
+        "2020-07-27",
+        "2020-08-10",
+        "2021-01-25",
+        "2021-05-24",
+        "2021-07-12",
+        "2021-12-15",
+        "2022-06-13",
+        "2022-07-29",
+        "2022-08-08",
+        "2023-05-22",
+        "2023-06-30",
+        "2024-01-04",
+        "2024-06-13",
+        "2025-01-14",
+        "2025-06-17"
+      ],
+      "returns": [
+        5.45,
+        5.32,
+        6.58,
+        3.46,
+        5.84,
+        9.09,
+        2.26,
+        3.61,
+        0.6,
+        -0.02,
+        4.39,
+        4.38,
+        -5.08,
+        6.77,
+        1.99,
+        7.46,
+        3.17,
+        2.58,
+        4.45
+      ]
+    },
+    "60d": {
+      "n_signals": 19,
+      "mean_return_pct": 4.13,
+      "median_return_pct": 5.68,
+      "win_rate_pct": 68.4,
+      "std_pct": 10.49,
+      "sharpe": 0.39,
+      "max_gain_pct": 20.43,
+      "max_loss_pct": -15.94,
+      "signal_dates": [
+        "2020-04-08",
+        "2020-06-03",
+        "2020-06-16",
+        "2020-07-14",
+        "2020-07-27",
+        "2020-08-10",
+        "2021-01-25",
+        "2021-05-24",
+        "2021-07-12",
+        "2021-12-15",
+        "2022-06-13",
+        "2022-07-29",
+        "2022-08-08",
+        "2023-05-22",
+        "2023-06-30",
+        "2024-01-04",
+        "2024-06-13",
+        "2025-01-14",
+        "2025-06-17"
+      ],
+      "returns": [
+        20.43,
+        14.01,
+        13.57,
+        5.68,
+        4.4,
+        5.7,
+        -3.57,
+        10.86,
+        3.91,
+        -12.37,
+        20.19,
+        -12.83,
+        -15.94,
+        11.4,
+        1.45,
+        12.05,
+        -5.16,
+        -4.42,
+        9.2
+      ]
+    }
+  },
+  "risk_metrics": {
+    "strategy": {
+      "total_trades": 19,
+      "holding_period_days": 20,
+      "total_return_pct": 101.6,
+      "mean_return_per_trade_pct": 3.81,
+      "std_per_trade_pct": 3.16,
+      "win_rate_pct": 89.5,
+      "profit_factor": 15.17,
+      "sharpe_ratio": 1.2,
+      "sortino_ratio": 1.06,
+      "calmar_ratio": 11.82,
+      "max_drawdown_pct": -5.08,
+      "max_drawdown_trade_start": "2022-08-08",
+      "max_drawdown_trade_end": "2022-08-08",
+      "var_95_pct": -0.52,
+      "var_99_pct": -4.17,
+      "cvar_95_pct": -5.08,
+      "max_gain_pct": 9.09,
+      "max_loss_pct": -5.08,
+      "max_consecutive_wins": 9,
+      "max_consecutive_losses": 1,
+      "annualized_return_pct": 60.1,
+      "first_signal_date": "2020-04-08",
+      "last_signal_date": "2025-06-17"
+    },
+    "buy_and_hold": {
+      "total_return_pct": 214.33,
+      "annualized_return_pct": 21.68,
+      "max_drawdown_pct": -35.12
+    },
+    "trade_log": [
+      {
+        "date": "2020-04-08",
+        "return_pct": 5.45
+      },
+      {
+        "date": "2020-06-03",
+        "return_pct": 5.32
+      },
+      {
+        "date": "2020-06-16",
+        "return_pct": 6.58
+      },
+      {
+        "date": "2020-07-14",
+        "return_pct": 3.46
+      },
+      {
+        "date": "2020-07-27",
+        "return_pct": 5.84
+      },
+      {
+        "date": "2020-08-10",
+        "return_pct": 9.09
+      },
+      {
+        "date": "2021-01-25",
+        "return_pct": 2.26
+      },
+      {
+        "date": "2021-05-24",
+        "return_pct": 3.61
+      },
+      {
+        "date": "2021-07-12",
+        "return_pct": 0.6
+      },
+      {
+        "date": "2021-12-15",
+        "return_pct": -0.02
+      },
+      {
+        "date": "2022-06-13",
+        "return_pct": 4.39
+      },
+      {
+        "date": "2022-07-29",
+        "return_pct": 4.38
+      },
+      {
+        "date": "2022-08-08",
+        "return_pct": -5.08
+      },
+      {
+        "date": "2023-05-22",
+        "return_pct": 6.77
+      },
+      {
+        "date": "2023-06-30",
+        "return_pct": 1.99
+      },
+      {
+        "date": "2024-01-04",
+        "return_pct": 7.46
+      },
+      {
+        "date": "2024-06-13",
+        "return_pct": 3.17
+      },
+      {
+        "date": "2025-01-14",
+        "return_pct": 2.58
+      },
+      {
+        "date": "2025-06-17",
+        "return_pct": 4.45
+      }
+    ],
+    "equity_curve": [
+      1.0,
+      1.0545,
+      1.1106,
+      1.1837,
+      1.2246,
+      1.2962,
+      1.414,
+      1.446,
+      1.4982,
+      1.5072,
+      1.507,
+      1.5732,
+      1.6421,
+      1.5586,
+      1.6641,
+      1.6972,
+      1.8237,
+      1.8815,
+      1.93,
+      2.016
+    ]
+  },
+  "comparison_vs_random": {
+    "5d": {
+      "lai_mean_return_pct": 1.38,
+      "lai_win_rate_pct": 84.2,
+      "lai_sharpe": 0.66,
+      "random_mean_return_pct": 0.3,
+      "random_win_rate_pct": 60.3,
+      "excess_return_pct": 1.08,
+      "excess_win_rate_pct": 23.9,
+      "p_value_return": 0.0395,
+      "p_value_winrate": 0.0254,
+      "percentile_return": 96.0,
+      "percentile_winrate": 97.5,
+      "n_signals": 19
+    },
+    "10d": {
+      "lai_mean_return_pct": 2.01,
+      "lai_win_rate_pct": 73.7,
+      "lai_sharpe": 0.86,
+      "random_mean_return_pct": 0.59,
+      "random_win_rate_pct": 61.3,
+      "excess_return_pct": 1.42,
+      "excess_win_rate_pct": 12.4,
+      "p_value_return": 0.0478,
+      "p_value_winrate": 0.0871,
+      "percentile_return": 95.2,
+      "percentile_winrate": 91.3,
+      "n_signals": 19
+    },
+    "20d": {
+      "lai_mean_return_pct": 3.81,
+      "lai_win_rate_pct": 89.5,
+      "lai_sharpe": 1.24,
+      "random_mean_return_pct": 1.14,
+      "random_win_rate_pct": 66.1,
+      "excess_return_pct": 2.67,
+      "excess_win_rate_pct": 23.4,
+      "p_value_return": 0.0101,
+      "p_value_winrate": 0.0031,
+      "percentile_return": 99.0,
+      "percentile_winrate": 99.7,
+      "n_signals": 19
+    },
+    "60d": {
+      "lai_mean_return_pct": 4.13,
+      "lai_win_rate_pct": 68.4,
+      "lai_sharpe": 0.39,
+      "random_mean_return_pct": 3.44,
+      "random_win_rate_pct": 71.9,
+      "excess_return_pct": 0.69,
+      "excess_win_rate_pct": -3.5,
+      "p_value_return": 0.3644,
+      "p_value_winrate": 0.7346,
+      "percentile_return": 63.6,
+      "percentile_winrate": 26.5,
+      "n_signals": 19
+    }
+  },
+  "regime_analysis": {
+    "high_anxiety_days": 405,
+    "low_anxiety_days": 298,
+    "normal_days": 809,
+    "high_anxiety_mean_daily_return_bps": 13.47,
+    "low_anxiety_mean_daily_return_bps": 16.38,
+    "normal_mean_daily_return_bps": 2.7,
+    "high_anxiety_annualized_return_pct": 33.94,
+    "low_anxiety_annualized_return_pct": 41.29,
+    "t_statistic": -0.2462,
+    "p_value": 0.805655
+  },
+  "granger_causality": {
+    "1": 0.016449,
+    "2": 0.050896,
+    "3": 0.100881,
+    "4": 0.03074,
+    "5": 0.039462,
+    "6": 0.034716,
+    "7": 0.070928,
+    "8": 0.119614,
+    "9": 0.153985,
+    "10": 0.017643,
+    "11": 0.011356,
+    "12": 0.017958,
+    "13": 0.024661,
+    "14": 0.073792,
+    "15": 0.011213,
+    "16": 0.007569,
+    "17": 0.02252,
+    "18": 0.026455,
+    "19": 0.0942,
+    "20": 0.136868
+  },
+  "per_stock_correlation": {
+    "AAPL": -0.0026,
+    "AMZN": -0.016,
+    "GOOGL": -0.0447,
+    "META": -0.0459,
+    "MSFT": -0.0264,
+    "NFLX": -0.0134,
+    "QQQ": -0.0355
+  },
+  "event_study": {
+    "Meta 11k layoffs": {
+      "date": "2022-11-09",
+      "lai_at_event": 17.0,
+      "stock_60d_return_pct": 17.96
+    },
+    "Google 12k layoffs": {
+      "date": "2023-01-20",
+      "lai_at_event": 52.1,
+      "stock_60d_return_pct": 12.97
+    },
+    "Microsoft 10k layoffs": {
+      "date": "2023-01-18",
+      "lai_at_event": 52.3,
+      "stock_60d_return_pct": 14.82
+    },
+    "Amazon 18k layoffs": {
+      "date": "2023-01-04",
+      "lai_at_event": 37.7,
+      "stock_60d_return_pct": 20.96
+    },
+    "Meta 10k layoffs (round 2)": {
+      "date": "2023-03-20",
+      "lai_at_event": 32.0,
+      "stock_60d_return_pct": 19.59
+    },
+    "Amazon 9k layoffs (round 2)": {
+      "date": "2023-04-19",
+      "lai_at_event": 33.2,
+      "stock_60d_return_pct": 20.21
+    },
+    "Google hundreds laid off": {
+      "date": "2024-01-10",
+      "lai_at_event": 77.3,
+      "stock_60d_return_pct": 8.0
+    },
+    "Microsoft 1.9k gaming layoffs": {
+      "date": "2024-01-25",
+      "lai_at_event": 77.2,
+      "stock_60d_return_pct": -1.64
+    },
+    "Apple EV team layoffs": {
+      "date": "2024-04-02",
+      "lai_at_event": 43.9,
+      "stock_60d_return_pct": 9.35
+    }
+  }
+}
