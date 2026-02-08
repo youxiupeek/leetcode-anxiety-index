@@ -1,0 +1,53 @@
+name: Daily LAI Update (EOD)
+
+on:
+  schedule:
+    # Run at 00:30 UTC daily (US market closes at 21:00 UTC / 4PM ET)
+    - cron: '30 0 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update Google Trends data
+        run: python data_collection/google_trends.py
+        continue-on-error: true
+
+      - name: Update contest data
+        run: python data_collection/contest_scraper.py
+        continue-on-error: true
+
+      - name: Update stock prices (EOD)
+        run: python data_collection/stock_data.py
+
+      - name: Recompute LAI
+        run: python indicator/lai_calculator.py
+
+      - name: Run backtest
+        run: python backtesting/backtest.py
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/lai.db
+          if git diff --staged --quiet; then
+            echo "No data changes to commit"
+          else
+            git commit -m "Daily LAI update $(date -u +%Y-%m-%d)"
+            git push
+          fi
