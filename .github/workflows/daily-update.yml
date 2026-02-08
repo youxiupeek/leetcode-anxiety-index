@@ -41,11 +41,17 @@ jobs:
       - name: Run full backtest (risk metrics, Monte Carlo, etc.)
         run: python backtesting/backtest.py
 
+      - name: Check signals and send email alerts
+        run: python notifications/email_alert.py
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+
       - name: Commit and push updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/lai.db data/backtest_results.json
+          git add data/lai.db data/backtest_results.json data/signal_state.json
           if git diff --staged --quiet; then
             echo "No data changes to commit"
           else
