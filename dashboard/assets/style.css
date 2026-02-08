@@ -1,0 +1,54 @@
+/* LAI Dashboard Dark Theme */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+/* Dash dropdown dark mode */
+.Select-control {
+    background-color: #161b22 !important;
+    border-color: #30363d !important;
+}
+
+.Select-menu-outer {
+    background-color: #161b22 !important;
+    border-color: #30363d !important;
+}
+
+.Select-option {
+    background-color: #161b22 !important;
+    color: #c9d1d9 !important;
+}
+
+.Select-option.is-focused {
+    background-color: #21262d !important;
+}
+
+.Select-value-label {
+    color: #c9d1d9 !important;
+}
+
+.Select-input > input {
+    color: #c9d1d9 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+}
